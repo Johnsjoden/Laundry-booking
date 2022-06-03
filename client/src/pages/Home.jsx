@@ -48,7 +48,7 @@ export default function Home() {
   }, [])
   const bookLaundry = () => {
     console.log(data)
-    fetch(`http://localhost:5000/laundry/${data.id}`, {
+    fetch(`http://localhost:5000/laundry/${data._id}`, {
             method: "POST",
             headers:{"Content-type": "Application/json", "Authorization": "Bearer " + token},
             body: JSON.stringify(data)
