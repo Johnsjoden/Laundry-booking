@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const laundrySchema = mongoose.Schema({
-    id: {require: true, type: String, unique: true},
+    id: {require: true, type: Number},
     date: {require: true, type: String},
     day: {require: true, type: String},
     timeStarted: {require: true, type: String},
