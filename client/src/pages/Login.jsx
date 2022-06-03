@@ -27,7 +27,7 @@ export default function Login() {
     <div>
         <form onSubmit={handleOnSubmit}>
             <MyInput value={username} setValue={setUsername} placeholder={"username"} type={"text"} />
-            <MyInput value={password} setValue={setPassword} placeholder={"password"} type={"password"}/>
+            <MyInput value={password} setValue={setPassword} placeholder={"password"} type="password"/>
             <MyButton /> 
             <Button type="submit">Submit</Button>
         </form>

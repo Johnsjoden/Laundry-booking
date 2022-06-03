@@ -10,13 +10,15 @@ exports.bookLaundry = async (laundryId, userId) => {
 exports.createLaundry = async (query) => {
 Date.prototype.addDays = function (days, query) {
     let date = new Date();
+
     if(date.getDay() === 0){
         date.setDate(date.getDate() - date.getDay() - 6 + days);
     }else {
       date.setDate(date.getDate() - date.getDay() + 1 + days);  
     }
-    date = date.toLocaleString('en-GB', {timeZone: 'Europe/Stockholm'});
-    date = date.split(",")[0]
+    /* date = date.toLocaleString('en-GB', {timeZone: 'Europe/Stockholm'});
+    date = date.split(",")[0] */
+    console.log(date.getTime())
     /* date = date.replace(new RegExp(/\//g), "-") */
     return date;
 };
@@ -72,5 +74,19 @@ const getDay = (index) => {
 }
 exports.getAllLaundries = async (query) => {
     const laundries = await Laundry.find().sort({id: 1})
+    let date = new Date()
+    /* date = date.split("")
+    date = date.reverse()
+    date = date.join()
+    console.log(date) */
+    console.log(date.getTime())
+
+    laundries.map(item => {
+        if(new Date(item.date).getTime() < date.getTime()){
+            console.log({item: item.date})
+            console.log({date})
+            item.booked = true
+        }
+    })
     return laundries
 }
