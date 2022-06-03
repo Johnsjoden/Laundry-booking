@@ -1,9 +1,10 @@
 const mongoose = require("mongoose")
 const bcrypt = require("bcryptjs")
-
+const {Laundry} = require("./laundry")
 const userSchema = mongoose.Schema({
     username: {type: String, required: true, unique: true, minlength: 4},
-    password: {type: String, required: true, minlength: 4}
+    password: {type: String, required: true, minlength: 4},
+    laundries: {type: [mongoose.Schema.Types.ObjectId], ref: "Laundry" }
 })
 userSchema.pre("save", async function (next){
     let user = this
