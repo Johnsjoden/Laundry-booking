@@ -12,8 +12,9 @@ user.post("/register", async (req, res, next ) => {
     })
 })
 user.post("/login", async (req, res, next) => {
+    console.log(req.body)
     const token = await loginUser(req, res, next)
-    res.json({token})
+    res.json({user: {token}})
 })
 
 module.exports = {user}

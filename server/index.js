@@ -6,6 +6,7 @@ const app = express()
 const mongoose = require("mongoose")
 const {auth} = require("./controllers/auth")
 require("dotenv").config()
+app.use(cors())
 mongoose.connect("mongodb://localhost:27017/laundry")
 const PORT = process.env.PORT
 const getDay = (day) => {
@@ -50,7 +51,6 @@ const getDay = (day) => {
         timeEnd: "13:00",
         booked: false
     }]) */
-app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(auth)

@@ -17,7 +17,7 @@ exports.loginUser = async (req, res, next) => {
             username: user.username
         }, 
         JWT_SECRET, {
-            expiresIn: "24h",
+            expiresIn: "31 days",
             subject: user._id.toString()
         })
         return token
