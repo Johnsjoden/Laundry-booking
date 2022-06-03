@@ -1,14 +1,18 @@
 const express = require("express")
 const {verify} = require("../controllers/auth")
-const {getLaundry, bookLaundry} = require("../controllers/laundry")
+const {getAllLaundries, bookLaundry, createLaundry} = require("../controllers/laundry")
 const laundry = express.Router()
 
-laundry.get("/", verify, async (req, res, next) => {
-    const result = await getLaundry(req.query)
+laundry.get("/create", verify, async (req, res, next) => {
+    const result = await createLaundry(req.query)
     res.json({result})
 })
 laundry.post("/:id", verify, async (req, res, next) => {
-    const result = await bookLaundry(req.params.id, req.body)
+    const result = await bookLaundry(req.params.id, req.user.userId)
     res.json(result)
+})
+laundry.get("/", verify, async (req, res, next) => {
+    const result = await getAllLaundries(req.query)
+    res.json({result})
 })
 module.exports = {laundry}
