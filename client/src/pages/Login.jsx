@@ -1,6 +1,7 @@
 import {React, useState} from 'react'
-import Button from '../components/Button'
-import Input from '../components/Input'
+import MyButton from '../components/MyButton'
+import MyInput from '../components/MyInput'
+import { Button } from '@mui/material'
 
 export default function Login() {
     const [username, setUsername] = useState("")
@@ -25,10 +26,10 @@ export default function Login() {
   return (
     <div>
         <form onSubmit={handleOnSubmit}>
-            <Input value={username} setValue={setUsername} placeholder={"username"} type={"text"} />
-            <Input value={password} setValue={setPassword} placeholder={"password"} type={"password"}/>
-            <Button /> 
-            <button type="submit">submit</button>  
+            <MyInput value={username} setValue={setUsername} placeholder={"username"} type={"text"} />
+            <MyInput value={password} setValue={setPassword} placeholder={"password"} type={"password"}/>
+            <MyButton /> 
+            <Button type="submit">Submit</Button>
         </form>
         
      </div>

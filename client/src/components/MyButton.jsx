@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
-export default function Button({}) {
+import { Button } from '@mui/material'
+export default function MyButton({}) {
     const [button, setButton] = useState(true)
     const handleOnClick = () => {
         if(button == true){
@@ -11,7 +12,7 @@ export default function Button({}) {
     }
   return (
     <div>
-        <button onClick={handleOnClick}>{button ? "show password": "hide password"}</button>
+        <Button onClick={handleOnClick}>{button ? "show password": "hide password"}</Button>
     </div>
   )
 }

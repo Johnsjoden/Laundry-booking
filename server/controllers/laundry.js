@@ -17,9 +17,22 @@ Date.prototype.addDays = function (days, query) {
     }
     date = date.toLocaleString('en-GB', {timeZone: 'Europe/Stockholm'});
     date = date.split(",")[0]
-    date = date.replace(new RegExp(/\//g), "-")
+    /* date = date.replace(new RegExp(/\//g), "-") */
     return date;
 };
+const getWeekNumber = (days) => {
+    currentDate = new Date();
+    if(currentDate.getDay() === 0){
+        currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 6 + days);
+    }else {
+        currentDate.setDate(currentDate.getDate() - currentDate.getDay() + days);  
+    }
+    startDate = new Date(currentDate.getFullYear(), 0, 1);
+    var dayy = Math.floor((currentDate - startDate) /
+        (24 * 60 * 60 * 1000));
+    var weekNumber = Math.ceil(dayy / 7);
+    return weekNumber
+}
 const date = new Date();
 const getDay = (index) => {
        let indexNumber = index / 7
@@ -48,6 +61,7 @@ const getDay = (index) => {
         const createLaundry = await new Laundry({
             id: index,
             date: date.addDays(index, query),
+            week: getWeekNumber(index),
             day: getDay(index),
             timeStarted: "19:00",
             timeEnd: "22:00",

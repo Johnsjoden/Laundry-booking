@@ -1,14 +1,12 @@
 import React from 'react'
-
-export default function Input({value, setValue, placeholder}) {
+import { Input } from '@mui/material'
+export default function MyInput({value, setValue, placeholder}) {
     const renderInput = (value, setValue, placeholder) => {
-        return <input 
-            value={value}
+        return <Input value={value}
             onChange={e => setValue(e.target.value)}
             placeholder={`${placeholder}`}
-            name={`${placeholder}`}
-        />
-        
+            name={`${placeholder}`}>
+            </Input>
     }
   return (
     <div>

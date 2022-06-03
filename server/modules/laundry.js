@@ -4,6 +4,7 @@ const laundrySchema = mongoose.Schema({
     id: {require: true, type: Number},
     date: {require: true, type: String},
     day: {require: true, type: String},
+    week: {type: Number},
     timeStarted: {require: true, type: String},
     timeEnd: {require: true, type: String},
     booked: false,

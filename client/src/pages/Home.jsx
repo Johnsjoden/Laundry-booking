@@ -7,11 +7,13 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { Alert, Grid, Paper } from '@mui/material'
+import { Container } from '@mui/system'
 export default function Home() {
   let [date, setDate] = useState(new Date())
   const [result, setResult] = useState([])
   const [open, setOpen] = React.useState(false);
-  const [data, setData] = useState({})
+  const [laundryData, setLaundryData] = useState({})
   const {
     token
   } = useContext(myContext)
@@ -20,7 +22,7 @@ export default function Home() {
   date = date.split(",")[0]
   const handleOpen = (value) => {
     setOpen(true);
-    setData(value)
+    setLaundryData(value)
     
   }
   const handleClose = () => setOpen(false);
@@ -47,23 +49,28 @@ export default function Home() {
     fetchData()
   }, [])
   const bookLaundry = () => {
-    console.log(data)
-    fetch(`http://localhost:5000/laundry/${data._id}`, {
+    fetch(`http://localhost:5000/laundry/${laundryData._id}`, {
             method: "POST",
             headers:{"Content-type": "Application/json", "Authorization": "Bearer " + token},
-            body: JSON.stringify(data)
-        },)
-        .then(res => res.json)
-        .then(data => console.log(data))
+            body: JSON.stringify(laundryData)
+        })
+        .then(res => res.json())
+        .then(data => {
+          fetchData()
+          handleClose()
+        })
+        // do a allert <Alert severity="success">This is a success alert — check it out!</Alert>
   }
   return (
-    <div>
-      {result.map((item, index) => {
-        return <div key={index}>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={{ xs: 1, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+        {result.map((item, index) => {
+        return <Grid item xs={1} sm={1.7} md={1.7} key={index}>
           <p>{item.date}</p>
-          <span>{item.day}</span>
-          <Button onClick={e => handleOpen(item)} >book</Button>
-        </div>
+        <span>{item.day}</span>
+        <Button disabled={item.booked} onClick={e => handleOpen(item)} >book</Button>
+      </Grid>
+      
       })}
       <Modal
         open={open}
@@ -73,14 +80,15 @@ export default function Home() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {data.date} {data.day} {data.timeEnd}-{data.timeStarted}
+            {laundryData.date} {laundryData.day} {laundryData.timeEnd}-{laundryData.timeStarted}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <Button onClick={e => bookLaundry(data.id)}>book</Button>
+            <Button onClick={e => bookLaundry(laundryData.id)}>book</Button>
           </Typography>
         </Box>
       </Modal>
-    </div>
+      </Grid>
+      </Box>
 
   )
 }

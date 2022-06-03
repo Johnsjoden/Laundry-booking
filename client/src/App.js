@@ -12,7 +12,6 @@ function App() {
   }
   return (
     <div>
-      
       <myContext.Provider value={{config, token}}>
       <Routes>
         <Route path="/home" element={<Home />} />
