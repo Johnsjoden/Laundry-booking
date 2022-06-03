@@ -1,10 +1,13 @@
 const {Laundry} = require("../modules/laundry");
-exports.bookLaundry = async (id, body) => {
-    const bookLaundry = await Laundry.saveOne(id, body)
+const {User} = require("../modules/user");
+const mongoose = require("mongoose")
+exports.bookLaundry = async (laundryId, userId) => {
+    const bookLaundry = await Laundry.findOneAndUpdate({_id: laundryId}, {booked: true})
+    laundryId = mongoose.Types.ObjectId(laundryId)
+    const addLaundryToUser = await User.findOneAndUpdate({_id: userId}, {$addToSet: {laundries: laundryId}})
     return bookLaundry
 }
-exports.getLaundry = async (query) => {
-     const array = []
+exports.createLaundry = async (query) => {
 Date.prototype.addDays = function (days, query) {
     let date = new Date();
     if(date.getDay() === 0){
@@ -15,10 +18,6 @@ Date.prototype.addDays = function (days, query) {
     date = date.toLocaleString('en-GB', {timeZone: 'Europe/Stockholm'});
     date = date.split(",")[0]
     date = date.replace(new RegExp(/\//g), "-")
-    /* currentdate = new Date(query.date);
-    var oneJan = new Date(currentdate.getFullYear(),0,1);
-    var numberOfDays = Math.floor((currentdate - oneJan) / (24 * 60 * 60 * 1000));
-    var result = Math.ceil(( currentdate.getDay() + 1 + numberOfDays) / 7); */
     return date;
 };
 const date = new Date();
@@ -45,47 +44,19 @@ const getDay = (index) => {
             return dayNames[7]
         }
 }
-    const laundry = await Laundry.find().select({_id: 0, __v: 0})
-    /* {id: 1, date: 1, day: 1, timeStarted: 1, timeEnd: 1, booked: 1} */
     for (let index = 0; index < 42; index++) {
-        array.push({
-        id: date.addDays(index, query) + "-19:00-22:00",
-        date: date.addDays(index, query),
-        day: getDay(index),
-        timeStarted: "19:00",
-        timeEnd: "22:00",
-        booked: false
-    })
-    /* array.filter(item => {
-        console.log(laundry.includes(item))
-    }) */
-
-    /* var arr1 = [1,2,3,4],
-    arr2 = [2,4],
-    res = array.filter(item => {
-        console.log(laundry.includes(item))
-    }); */
-    const booked = (item) => {
-        if(item.booked === true){
-            return item
-        }else {
-            return item
-        }
-    }
-    arrayTwo = []
-    result = array.filter(item => {
-        laundry.forEach(({id}) => {
-            if(item.id === id){
-                item.booked = true
-                arrayTwo.push(item)
-            }
-            else {
-                arrayTwo.push(item)
-            }
+        const createLaundry = await new Laundry({
+            id: index,
+            date: date.addDays(index, query),
+            day: getDay(index),
+            timeStarted: "19:00",
+            timeEnd: "22:00",
+            booked: false
         })
-    })
-    
-    /* console.log(array.includes("30-05-2022-19:00-22:00")); */
+        createLaundry.save()
+    }
 }
-return arrayTwo
+exports.getAllLaundries = async (query) => {
+    const laundries = await Laundry.find().sort({id: 1})
+    return laundries
 }
