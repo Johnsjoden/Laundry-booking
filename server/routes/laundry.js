@@ -9,7 +9,7 @@ laundry.get("/create", verify, async (req, res, next) => {
 })
 laundry.post("/:id", verify, async (req, res, next) => {
     const result = await bookLaundry(req.params.id, req.user.userId)
-    res.json(result)
+    res.json({result})
 })
 laundry.get("/", verify, async (req, res, next) => {
     const result = await getAllLaundries(req.query)
