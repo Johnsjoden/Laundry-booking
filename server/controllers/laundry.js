@@ -74,12 +74,7 @@ const getDay = (index) => {
 }
 exports.getAllLaundries = async (query) => {
     const laundries = await Laundry.find().sort({id: 1})
-    let date = new Date()
-    date = date.toLocaleDateString()
-    let time = new Date()
-    time = time.toLocaleTimeString("en-gb", {timeZone: "europe/stockholm"})
     const twoHours = 7200000
-    const currentDateWrongOne = new Date(`${date} ${time}`).getTime() + twoHours
     const currentDate = new Date().getTime() + twoHours
     laundries.map(item => {
         let bookingDate = new Date(item.date).getTime()
