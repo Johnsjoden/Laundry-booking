@@ -16,9 +16,8 @@ Date.prototype.addDays = function (days, query) {
     }else {
       date.setDate(date.getDate() - date.getDay() + 1 + days);  
     }
-    /* date = date.toLocaleString('en-GB', {timeZone: 'Europe/Stockholm'});
-    date = date.split(",")[0] */
-    console.log(date.getTime())
+    date = date.toLocaleDateString()
+    console.log(date)
     /* date = date.replace(new RegExp(/\//g), "-") */
     return date;
 };
@@ -62,12 +61,13 @@ const getDay = (index) => {
     for (let index = 0; index < 42; index++) {
         const createLaundry = await new Laundry({
             id: index,
-            date: date.addDays(index, query),
+            date: date.addDays(index, query) + " 22:00",
             week: getWeekNumber(index),
             day: getDay(index),
             timeStarted: "19:00",
             timeEnd: "22:00",
-            booked: false
+            booked: false,
+            notActive: false
         })
         createLaundry.save()
     }
@@ -75,16 +75,16 @@ const getDay = (index) => {
 exports.getAllLaundries = async (query) => {
     const laundries = await Laundry.find().sort({id: 1})
     let date = new Date()
-    /* date = date.split("")
-    date = date.reverse()
-    date = date.join()
-    console.log(date) */
-    let test = laundries[0]
-    test.date = new Date(test.date)
-    console.log(test)
+    date = date.toLocaleDateString()
+    let time = new Date()
+    time = time.toLocaleTimeString("en-gb", {timeZone: "europe/stockholm"})
+    const twoHours = 7200000
+    const currentDateWrongOne = new Date(`${date} ${time}`).getTime() + twoHours
+    const currentDate = new Date().getTime() + twoHours
     laundries.map(item => {
-        if(new Date(item.date).getTime() < date.getTime()){
-            item.booked = true
+        let bookingDate = new Date(item.date).getTime()
+        if(bookingDate < currentDate){
+            item.notActive = true
         }
     })
     return laundries

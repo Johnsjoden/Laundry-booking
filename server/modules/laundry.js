@@ -8,7 +8,7 @@ const laundrySchema = mongoose.Schema({
     timeStarted: {require: true, type: String},
     timeEnd: {require: true, type: String},
     booked: false,
-    active: false
+    notActive: false
 })
 laundrySchema.statics.saveOne = async function (id, body){
     const laundry = await Laundry.findOne({id: id})
