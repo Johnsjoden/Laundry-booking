@@ -68,7 +68,7 @@ export default function Home() {
         return <Grid item xs={1} sm={1.7} md={1.7} key={index}>
           <p>{item.date}</p>
         <span>{item.day}</span>
-        <Button disabled={item.booked} onClick={e => handleOpen(item)} >book</Button>
+        <Button disabled={item.booked || item.notActive} onClick={e => handleOpen(item)} >book</Button>
       </Grid>
       
       })}
