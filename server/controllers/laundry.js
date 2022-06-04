@@ -79,12 +79,11 @@ exports.getAllLaundries = async (query) => {
     date = date.reverse()
     date = date.join()
     console.log(date) */
-    console.log(date.getTime())
-
+    let test = laundries[0]
+    test.date = new Date(test.date)
+    console.log(test)
     laundries.map(item => {
         if(new Date(item.date).getTime() < date.getTime()){
-            console.log({item: item.date})
-            console.log({date})
             item.booked = true
         }
     })
