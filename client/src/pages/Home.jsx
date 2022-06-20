@@ -15,11 +15,9 @@ export default function Home() {
   const [open, setOpen] = React.useState(false);
   const [laundryData, setLaundryData] = useState({})
   const {
-    token
+    token,
+    config
   } = useContext(myContext)
-  date.setDate(date.getDate())
-  date = date.toLocaleString('en-GB');
-  date = date.split(",")[0]
   const handleOpen = (value) => {
     setOpen(true);
     setLaundryData(value)
@@ -37,11 +35,8 @@ export default function Home() {
     boxShadow: 24,
     p: 4,
   };
-  const {
-    config
-  } = useContext(myContext)
   const fetchData = () => {
-    fetch(`http://localhost:5000/laundry?date=${date}`, config)
+    fetch(`http://localhost:5000/laundry/create`, config)
     .then(res => res.json())
     .then(data => setResult(data.result))
   }
@@ -49,7 +44,7 @@ export default function Home() {
     fetchData()
   }, [])
   const bookLaundry = () => {
-    fetch(`http://localhost:5000/laundry/${laundryData._id}`, {
+    fetch(`http://localhost:5000/laundry`, {
             method: "POST",
             headers:{"Content-type": "Application/json", "Authorization": "Bearer " + token},
             body: JSON.stringify(laundryData)
