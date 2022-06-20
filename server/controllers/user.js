@@ -4,8 +4,17 @@ require("dotenv").config()
 const JWT_SECRET = process.env.JWT_SECRET
 exports.registerUser = async (req, res, next) => {
     const {password, username} = req.body
-    const user = new User({password, username})
-    await user.save()
+    if(password.length > 4 && username.length > 4){
+        const user = new User({password, username})
+        await user.save() 
+        return user
+    }else {
+        return "error"
+    }
+}
+exports.getUser = async (req, res, next) => {
+    const filter = {id: req.user.userId}
+    const user = await User.findOne(filter).populate("laundries")
     return user
 }
 exports.loginUser = async (req, res, next) => {
