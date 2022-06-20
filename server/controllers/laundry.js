@@ -1,13 +1,13 @@
 const {Laundry} = require("../modules/laundry");
 const {User} = require("../modules/user");
 const mongoose = require("mongoose")
-exports.bookLaundry = async (laundryId, userId) => {
-    const bookLaundry = await Laundry.findOneAndUpdate({_id: laundryId}, {booked: true})
-    laundryId = mongoose.Types.ObjectId(laundryId)
-    const addLaundryToUser = await User.findOneAndUpdate({_id: userId}, {$addToSet: {laundries: laundryId}})
+exports.bookLaundry = async (body, userId) => {
+    const bookLaundry = await Laundry.saveOne(body, userId)
+    const addLaundryToUser = await User.findOneAndUpdate({_id: userId}, {$addToSet: {laundries: bookLaundry._id}})
     return bookLaundry
 }
 exports.createLaundry = async (query) => {
+    
 Date.prototype.addDays = function (days, query) {
     let date = new Date();
 
@@ -17,7 +17,6 @@ Date.prototype.addDays = function (days, query) {
       date.setDate(date.getDate() - date.getDay() + 1 + days);  
     }
     date = date.toLocaleDateString()
-    console.log(date)
     /* date = date.replace(new RegExp(/\//g), "-") */
     return date;
 };
@@ -58,10 +57,11 @@ const getDay = (index) => {
             return dayNames[7]
         }
 }
+let array = []
     for (let index = 0; index < 42; index++) {
-        const createLaundry = await new Laundry({
-            id: index,
-            date: date.addDays(index, query) + " 22:00",
+        array.push({
+            id: date.addDays(index, query) + "/19:00-22:00",
+            date: date.addDays(index, query),
             week: getWeekNumber(index),
             day: getDay(index),
             timeStarted: "19:00",
@@ -69,8 +69,24 @@ const getDay = (index) => {
             booked: false,
             notActive: false
         })
-        createLaundry.save()
     }
+    const twoHours = 7200000
+    const currentDates = new Date().getTime() + twoHours
+    const laundries = await Laundry.find()
+    array.map(item => {
+        let bookingDate = new Date(`${item.date} ${item.timeEnd}`).getTime()
+        if(bookingDate < currentDates){
+            item.notActive = true
+        }
+    })
+    laundries.map(item => {
+        array.map(data => {
+            if(item.id === data.id){
+                data.booked = true
+            }
+        })
+    })
+    return array
 }
 exports.getAllLaundries = async (query) => {
     const laundries = await Laundry.find().sort({id: 1})
@@ -83,4 +99,13 @@ exports.getAllLaundries = async (query) => {
         }
     })
     return laundries
+}
+exports.unbookLaundry = async (req, res, next) => {
+    console.log(req.params.id)
+    const filter = {
+        _id: req.params.id
+    }
+    const deleteLaundry = await Laundry.deleteOne(filter)
+    const remove_idFromUser = await User.findOneAndUpdate({_id: req.user.userId}, {$pull: {laundries: req.params.id}})
+    return "unbooked"
 }
