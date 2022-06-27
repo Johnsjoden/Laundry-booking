@@ -15,6 +15,14 @@ exports.registerUser = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
     const filter = {id: req.user.userId}
     const user = await User.findOne(filter).populate("laundries")
+    const twoHours = 7200000
+    const currentDates = new Date().getTime() + twoHours
+    user.laundries.map(item => {
+        let bookingDate = new Date(`${item.date} ${item.timeEnd}`).getTime()
+        if(bookingDate < currentDates){
+            item.notActive = true
+        }
+    })
     return user
 }
 exports.loginUser = async (req, res, next) => {

@@ -64,7 +64,7 @@ export default function User () {
       return <Grid item xs={1.5} sm={2} md={2} key={index}>
         <p>{item.date}</p>
       <span>{item.day}</span>
-      <Button onClick={e => handleOpen(item)} >unbook</Button>
+      <Button disabled={item.notActive} onClick={e => handleOpen(item)} >unbook</Button>
     </Grid>
     
     }) : <p>loading</p> }

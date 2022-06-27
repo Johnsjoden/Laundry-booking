@@ -1,11 +1,22 @@
 import {React, useState} from 'react'
-import MyButton from '../components/MyButton'
 import MyInput from '../components/MyInput'
 import { Button } from '@mui/material'
-
+import {Link, useNavigate}  from "react-router-dom"
 export default function Login() {
+    const navigate = useNavigate()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [button, setButton] = useState(true)
+    const [type, setType] = useState("password")
+    const handleOnClick = () => {
+        if(button == true){
+            setButton(false)
+            setType("text")
+        }else{
+            setButton(true)
+            setType("password")
+        }
+    }
     const handleOnSubmit = (e) => {
         e.preventDefault()
         const payload = {
@@ -21,17 +32,20 @@ export default function Login() {
         .then(data => {
             const token = data.user.token
             localStorage.setItem("key", token)
+            navigate("/book")
+            window.location.reload()
         })
     }
   return (
     <div>
+        <h1>Login</h1>
         <form onSubmit={handleOnSubmit}>
             <MyInput value={username} setValue={setUsername} placeholder={"username"} type={"text"} />
-            <MyInput value={password} setValue={setPassword} placeholder={"password"} type="password"/>
-            <MyButton /> 
-            <Button type="submit">Submit</Button>
+            <MyInput value={password} setValue={setPassword} placeholder={"password"} type={type}/>
+            <Button onClick={handleOnClick}>{button ? "show password": "hide password"}</Button>
+            <Button type="submit">Login</Button>
         </form>
-        
+        <Button component={Link} to="/register" color="primary">Register Account</Button>
      </div>
   )
 }

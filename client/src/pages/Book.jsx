@@ -60,9 +60,10 @@ export default function Home() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={{ xs: 1, md: 1 }} columns={{ xs: 4, sm: 8, md: 12 }}>
         {result.map((item, index) => {
-        return <Grid item xs={1} sm={1.7} md={1.7} key={index}>
+        return <Grid item xs={1} sm={1.7} md={1.7} key={index} sx={{border: 1, borderColor: "primary.main"}}>
           <p>{item.date}</p>
-        <span>{item.day}</span>
+        <span>{item.day} </span>
+        <p>{item.timeStarted}-{item.timeEnd}</p>
         <Button disabled={item.booked || item.notActive} onClick={e => handleOpen(item)} >book</Button>
       </Grid>
       

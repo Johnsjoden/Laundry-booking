@@ -1,8 +1,10 @@
 import { Button } from '@mui/material'
 import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import MyInput from '../components/MyInput'
 
 export default function Register() {
+    const navigate = useNavigate()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const registerUser = (e) => {
@@ -16,16 +18,19 @@ export default function Register() {
             headers: {"content-type": "application/json"},
             body: JSON.stringify(payload)
         })
-        .then(res => res.json())
-        .then(data => console.log(data))
+        .then(res => {
+            navigate("/login")
+        })
     }
   return (
       <div>
+        <h1>Register account</h1>
         <form onSubmit={registerUser}>
             <MyInput value={username} setValue={setUsername} placeholder={"username"} /> 
             <MyInput value={password} setValue={setPassword} placeholder={"password"} />
-            <Button type="submit" variant='contained'>Submit</Button>
+            <Button type="submit">Submit</Button>
         </form>
+        <Button component={Link} to="/login" color="primary">Already have a account? Login</Button>
       </div>
       
   )
