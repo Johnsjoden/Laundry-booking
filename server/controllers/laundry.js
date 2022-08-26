@@ -35,27 +35,9 @@ const getWeekNumber = (days) => {
 }
 const date = new Date();
 const getDay = (index) => {
-       let indexNumber = index / 7
-       let substractNumber = Math.floor(indexNumber)
-       indexNumber = Math.round(indexNumber * 100) / 100
-       indexNumber = indexNumber.toFixed(2) - substractNumber
-       indexNumber = indexNumber.toFixed(2)
-       let dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
-       if(indexNumber == "0.00"){
-        return dayNames[1]
-       }else if(indexNumber == "0.14"){
-           return dayNames[2]
-       }else if(indexNumber == "0.29"){
-        return dayNames[3]
-        }else if(indexNumber == "0.43"){
-            return dayNames[4]
-        }else if(indexNumber == "0.57"){
-            return dayNames[5]
-        }else if(indexNumber == "0.71"){
-            return dayNames[6]
-        }else if(indexNumber == "0.86"){
-            return dayNames[7]
-        }
+       let dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday']
+       const getIndexDay = index % 7
+       return dayNames[getIndexDay]
 }
 let array = []
     for (let index = 0; index < 42; index++) {
@@ -108,4 +90,26 @@ exports.unbookLaundry = async (req, res, next) => {
     const deleteLaundry = await Laundry.deleteOne(filter)
     const remove_idFromUser = await User.findOneAndUpdate({_id: req.user.userId}, {$pull: {laundries: req.params.id}})
     return "unbooked"
+}
+exports.getWeekNumber = async (req, res, next) => {
+    const getWeekNumber = (days) => {
+        currentDate = new Date();
+        if(currentDate.getDay() === 0){
+            currentDate.setDate(currentDate.getDate() - currentDate.getDay() - 6 + days);
+        }else {
+            currentDate.setDate(currentDate.getDate() - currentDate.getDay() + days);  
+        }
+        startDate = new Date(currentDate.getFullYear(), 0, 1);
+        var dayy = Math.floor((currentDate - startDate) /
+            (24 * 60 * 60 * 1000));
+        var weekNumber = Math.ceil(dayy / 7);
+        return weekNumber
+    }
+    array = []
+    for (let index = 0; index < 4; index++){
+        array.push({
+            weekNumber: getWeekNumber(index * 7)
+        })
+    }
+    return array
 }
