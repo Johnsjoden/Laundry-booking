@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { Route, Routes , Link, Navigate, useNavigate} from "react-router-dom";
 import Home from "./pages/Book";
 import Login from "./pages/Login";
+import NewBook from "./pages/NewBook";
 import Register from "./pages/Register"
 import User from "./pages/User";
 const myContext = createContext()
@@ -45,6 +46,7 @@ function App() {
         <Route path="/book" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user" element={<User />} />
+        <Route path="/week" element={<NewBook />} />
       </Routes>
       </myContext.Provider>
     </div>
