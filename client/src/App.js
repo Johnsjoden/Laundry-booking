@@ -5,6 +5,7 @@ import Home from "./pages/Book";
 import Login from "./pages/Login";
 import NewBook from "./pages/NewBook";
 import Register from "./pages/Register"
+import WeekPage from "./pages/WeekPage"
 import User from "./pages/User";
 const myContext = createContext()
 function App() {
@@ -47,6 +48,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/user" element={<User />} />
         <Route path="/week" element={<NewBook />} />
+        <Route path="/week/:id" element={<WeekPage />} />
       </Routes>
       </myContext.Provider>
     </div>
