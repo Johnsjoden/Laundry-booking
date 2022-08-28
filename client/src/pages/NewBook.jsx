@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { myContext } from '../App'
 
 export default function NewBook() {
     const [week, setWeek] = useState("")
-    const [result, setResult] = useState([])
+    const [result, setResult] = useState(null)
+    const [results, setResults] = useState(null)
     const {
         config
     } = useContext(myContext)
@@ -15,20 +17,24 @@ export default function NewBook() {
         .then(data => setResult(data))
         }
     , [])
+    useEffect(() => {
+        
+    }, [])
     const handleOnClick = (weekNumber) => {
         setWeek(weekNumber)
+        setResult(null)
         fetch(`http://localhost:5000/laundry/create?week=${week}`, config)
         .then(res => res.json())
-        .then(data => setResult(result))
+        .then(data => setResults(data))
     }
-    console.log(result)
+    console.log(results)
   return (
     <div>{
-        result.map((item, index) => {
+        result? result.map((item, index) => {
             return <div key={index}>
-                <p onClick={e => handleOnClick(item.weekNumber)}>{item.weekNumber}</p>
+                <Link to={`${item.weekNumber}`}>{item.weekNumber}</Link>
             </div>
-        })
-        }</div>
+        }) : <p></p> }
+    </div>
   )
 }
