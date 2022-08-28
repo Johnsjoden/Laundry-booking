@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken")
 const JWT_SECRET = process.env.JWT_SECRET
 exports.auth = function(req, res, next){
     const headers = req.headers.authorization
-    if(headers){
+    if(headers && headers != "Bearer no user found"){
         // gets bearer token and splits it then takes the token.
         const auth = headers.split(" ")[1]
         req.user = jwt.verify(auth, JWT_SECRET)
