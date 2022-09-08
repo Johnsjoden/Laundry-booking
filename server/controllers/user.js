@@ -13,7 +13,8 @@ exports.registerUser = async (req, res, next) => {
     }
 }
 exports.getUser = async (req, res, next) => {
-    const filter = {id: req.user.userId}
+    const filter = {_id: req.user.userId}
+    console.log(filter)
     const user = await User.findOne(filter).populate("laundries")
     const twoHours = 7200000
     const currentDates = new Date().getTime() + twoHours
@@ -23,6 +24,7 @@ exports.getUser = async (req, res, next) => {
             item.notActive = true
         }
     })
+    console.log(user)
     return user
 }
 exports.loginUser = async (req, res, next) => {
