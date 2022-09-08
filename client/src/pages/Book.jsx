@@ -74,11 +74,10 @@ export default function Home() {
         {result.map((item, index) => {
         return <Grid item xs={1} sm={1.7} md={1.7} key={index} sx={{ borderColor: "primary.main", p: "20px", m: "10px", boxShadow: "3", borderRadius: "16px",}}>
           <p>{item.date}</p>
-        <span align="center">{item.day} </span>
-        {item.bookingTimes.map((item, index) => {
-         return <div key={index}>
+          <Typography textAlign="center">{item.day}</Typography>        {item.bookingTimes.map((item, index) => {
+         return <Grid textAlign="center" key={index}>
             <Button disabled={item.booked || item.notActive} onClick={e => handleOpen(item)} >{item.timeStarted}</Button>
-          </div>
+          </Grid>
         })}
       </Grid>
       
