@@ -43,7 +43,7 @@ exports.createLaundry = async (query) => {
             let dayNamess = ['Monday', 'Sunday', 'Saturday', 'Friday', 'Thursday', 'Wednesday', 'Tuesday']
             return dayNamess[Math.abs(index) % 7]
         }
-        const getIndexDay = Math.abs(index) % 7
+        const getIndexDay = index % 7
         return dayNames[getIndexDay]
     }
     let array = []
