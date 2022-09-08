@@ -3,9 +3,8 @@ import { createContext } from "react";
 import { Route, Routes , Link, Navigate, useNavigate} from "react-router-dom";
 import Home from "./pages/Book";
 import Login from "./pages/Login";
-import NewBook from "./pages/NewBook";
 import Register from "./pages/Register"
-import WeekPage from "./pages/WeekPage"
+import TestingPage from "./pages/TestingPage";
 import User from "./pages/User";
 const myContext = createContext()
 function App() {
@@ -41,16 +40,21 @@ function App() {
         </Toolbar>
       </AppBar>
     </Box>
+    
       <myContext.Provider value={{config, token}}>
       <Routes>
         <Route path="/register" element = { <Register />} />
         <Route path="/book" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user" element={<User />} />
-        <Route path="/week" element={<NewBook />} />
-        <Route path="/week/:id" element={<WeekPage />} />
+        <Route path="/test" element={<TestingPage />} />
       </Routes>
       </myContext.Provider>
+      <AppBar position="">
+        <Toolbar >
+          <div>Link to my github</div>
+        </Toolbar>
+      </AppBar>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import {React, useState} from 'react'
 import MyInput from '../components/MyInput'
-import { Button } from '@mui/material'
+import { Alert, Button } from '@mui/material'
 import {Link, useNavigate}  from "react-router-dom"
 export default function Login() {
     const navigate = useNavigate()
@@ -8,6 +8,7 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const [button, setButton] = useState(true)
     const [type, setType] = useState("password")
+    const [error, setError] = useState(null)
     const handleOnClick = () => {
         if(button == true){
             setButton(false)
@@ -30,10 +31,15 @@ export default function Login() {
         }, )
         .then(res => res.json())
         .then(data => {
-            const token = data.user.token
-            localStorage.setItem("key", token)
-            navigate("/book")
-            window.location.reload()
+            if(data.user.token === "no user found"){
+                setError(data.user.token)
+            }else {
+                const token = data.user.token
+                localStorage.setItem("key", token)
+                navigate("/book")
+                window.location.reload()
+            }
+            
         })
     }
   return (
@@ -45,6 +51,7 @@ export default function Login() {
             <Button onClick={handleOnClick}>{button ? "show password": "hide password"}</Button>
             <Button type="submit">Login</Button>
         </form>
+        {error? <Alert severity='error'>{error}</Alert>: "" }
         <Button component={Link} to="/register" color="primary">Register Account</Button>
      </div>
   )

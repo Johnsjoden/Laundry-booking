@@ -24,7 +24,6 @@ exports.getUser = async (req, res, next) => {
             item.notActive = true
         }
     })
-    console.log(user)
     return user
 }
 exports.loginUser = async (req, res, next) => {

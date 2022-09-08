@@ -72,15 +72,14 @@ export default function Home() {
       </Box>
       <Grid sx={{ display: "flex"}} >
         {result.map((item, index) => {
-        return <Grid item xs={1} sm={1.7} md={1.7} key={index} sx={{ borderColor: "primary.main", p: "20px", m: "10px", boxShadow: "3"}}>
+        return <Grid item xs={1} sm={1.7} md={1.7} key={index} sx={{ borderColor: "primary.main", p: "20px", m: "10px", boxShadow: "3", borderRadius: "16px",}}>
           <p>{item.date}</p>
-        <span>{item.day} </span>
+        <span align="center">{item.day} </span>
         {item.bookingTimes.map((item, index) => {
          return <div key={index}>
             <Button disabled={item.booked || item.notActive} onClick={e => handleOpen(item)} >{item.timeStarted}</Button>
           </div>
         })}
-        <p>{item.timeStarted}-{item.timeEnd}</p>
       </Grid>
       
       })}

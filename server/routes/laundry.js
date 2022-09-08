@@ -1,6 +1,6 @@
 const express = require("express")
 const {verify} = require("../controllers/auth")
-const {getAllLaundries, bookLaundry, createLaundry, unbookLaundry} = require("../controllers/laundry")
+const {getAllLaundries, bookLaundry, createLaundry, unbookLaundry, getWeekNumber} = require("../controllers/laundry")
 const laundry = express.Router()
 
 laundry.get("/create", verify, async (req, res, next) => {
@@ -18,5 +18,9 @@ laundry.get("/", verify, async (req, res, next) => {
 laundry.delete("/:id", verify, async (req, res, next) => {
     const result = await unbookLaundry(req, res, next)
     res.json({result})
+})
+laundry.get("/week", verify, async (req, res, next) => {
+    const result = await getWeekNumber(req.query)
+    res.json(result)
 })
 module.exports = {laundry}
