@@ -50,9 +50,11 @@ function App() {
         <Route path="/test" element={<TestingPage />} />
       </Routes>
       </myContext.Provider>
-      <AppBar position="">
+      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar >
-          <div>Link to my github</div>
+        <Button variant="contained" color="primary">
+        <a href="https://github.com/Johnsjoden">Link to github</a>
+        </Button>
         </Toolbar>
       </AppBar>
     </div>
