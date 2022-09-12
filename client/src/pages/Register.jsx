@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import ErrorMessage from '../components/ErrorMessage'
 import MyInput from '../components/MyInput'
-
+import {postData} from "../Api"
 export default function Register() {
     const navigate = useNavigate()
     const [username, setUsername] = useState("")
@@ -12,17 +12,13 @@ export default function Register() {
     const [usernameError, setUsernameError] = useState(null)
     const [passwordError, setPasswordError] = useState(null)
     const registerUser = (e) => {
+        const url = "http://localhost:5000/user/register"
         e.preventDefault()
         const payload = {
             username,
             password
         }
-        fetch("http://localhost:5000/user/register", {
-            method: "POST",
-            headers: {"content-type": "application/json"},
-            body: JSON.stringify(payload)
-        })
-        .then(res => res.json())
+        postData(url, payload)
         .then(data => {
             if(data.register === "failed"){
                 setPasswordError(data.username)

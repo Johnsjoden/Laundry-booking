@@ -3,6 +3,7 @@ import MyInput from '../components/MyInput'
 import { Alert, Button } from '@mui/material'
 import {Link, useNavigate}  from "react-router-dom"
 import ErrorMessage from '../components/ErrorMessage'
+import {postData} from "../Api"
 export default function Login() {
     const navigate = useNavigate()
     const [username, setUsername] = useState("")
@@ -25,14 +26,9 @@ export default function Login() {
             username,
             password
         }
-        fetch("http://localhost:5000/user/login", {
-            method: "POST",
-            headers:{"Content-type": "Application/json"},
-            body: JSON.stringify(payload)
-        }, )
-        .then(res => res.json())
+        const url = "http://localhost:5000/user/login"
+        postData(url, payload)
         .then(data => {
-            console.log(data)
             if(data.user.token === "no user found"){
                 setUsernameError(data.user.token)
             }else {

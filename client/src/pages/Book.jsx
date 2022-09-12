@@ -9,19 +9,17 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Alert, CircularProgress, Grid, Paper } from '@mui/material'
 import { Container } from '@mui/system'
+import {fetchBookingDates, bookLaundry} from "../Api"
 export default function Home() {
   let [date, setDate] = useState(new Date())
   const [result, setResult] = useState([])
   const [open, setOpen] = React.useState(false);
-  const [laundryData, setLaundryData] = useState({})
+  const [payload, setPayload] = useState({})
   const [week, setWeek] = useState(0)
-  const {
-    token,
-    config
-  } = useContext(myContext)
+  const url = `http://localhost:5000/laundry/create?week=${week}`
   const handleOpen = (value) => {
     setOpen(true);
-    setLaundryData(value)
+    setPayload(value)
     
   }
   const handleClose = () => setOpen(false);
@@ -36,26 +34,19 @@ export default function Home() {
     boxShadow: 24,
     p: 4,
   };
-  const fetchData = () => {
-    fetch(`http://localhost:5000/laundry/create?week=${week}`, config)
-    .then(res => res.json())
-    .then(data => setResult(data.result))
-  }
   useEffect(() => {
-    fetchData()
+    fetchBookingDates(url, week)
+    .then(data => {
+      setResult(data.result)
+    })
+    
   }, [week])
-  const bookLaundry = () => {
-    fetch(`http://localhost:5000/laundry`, {
-            method: "POST",
-            headers:{"Content-type": "Application/json", "Authorization": "Bearer " + token},
-            body: JSON.stringify(laundryData)
-        })
-        .then(res => res.json())
+  const handleOnClick = () => {
+        bookLaundry(url, payload)
         .then(data => {
-          fetchData()
+          fetchBookingDates()
           handleClose()
         })
-        // do a allert <Alert severity="success">This is a success alert — check it out!</Alert>
   }
   const nextWeek = () => {
     setWeek(week + 7)
@@ -63,7 +54,6 @@ export default function Home() {
   const previousWeek = () => {
     setWeek(week - 7)
   }
-  console.log(result)
   return (
     <Container>
       <Box sx={{ display: "flex"}}>
@@ -90,10 +80,10 @@ export default function Home() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            {laundryData.date} {laundryData.day} {laundryData.timeStarted}-{laundryData.timeEnd}
+            {payload.date} {payload.day} {payload.timeStarted}-{payload.timeEnd}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <Button onClick={e => bookLaundry(laundryData.id)}>book</Button>
+            <Button onClick={e => handleOnClick(payload.id)}>book</Button>
           </Typography>
         </Box>
       </Modal>
